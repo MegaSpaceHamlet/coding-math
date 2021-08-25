@@ -6,9 +6,116 @@ window.onload = () => {
 
 
     // sinewave();
-    // sinewaveMotion();
+    // sinewaveMotionY();
     // growShrink();
     fadeInOut();
+    // sinewaveMotionX();
+    // circle();
+    // ellipse();
+    // lissajousCurve();
+    // drawInCircle();
+
+    /**
+     * Draws number of objects evenly on a circle's perimeter
+     * I see a wheel. I feel like this function could be used
+     * to create a wheel-turning effect.
+     */
+    function drawInCircle() {
+        let centerX = width / 2,
+            centerY = height / 2,
+            radius = 200,
+            angle = 0,
+            numObjects = 10, // can change this variable to see how it affects
+            slice = Math.PI * 2 / numObjects,
+            x, y;
+
+        context.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < numObjects; i++) {
+            angle = i * slice;
+            x = centerX + Math.cos(angle) * radius;
+            y = centerY + Math.sin(angle) * radius;
+            context.beginPath();
+            context.arc(x, y, 10, 0, Math.PI * 2, false);
+            context.fill();
+        }
+
+    }
+
+
+    function lissajousCurve() {
+        let centerX = width / 2,
+            centerY = height / 2,
+            xRadius = 200,
+            yRadius = 400,
+            xAngle = 0,
+            yAngle = 0,
+            xSpeed = .025,
+            ySpeed = .010,
+            x, y;
+
+        render();
+
+        function render() {
+            context.clearRect(0, 0, width, height);
+            x = centerX + Math.cos(xAngle) * xRadius;
+            y = centerY + Math.sin(yAngle) * yRadius;
+            context.beginPath();
+            context.arc(x, y, 10, 0, Math.PI * 2, false);
+            context.fill();
+
+            xAngle += xSpeed;
+            yAngle += ySpeed;
+            requestAnimationFrame(render);
+        }
+    }
+
+    function ellipse() {
+        let centerX = width / 2,
+            centerY = height / 2,
+            xRadius = 200,
+            yRadius = 400,
+            angle = 0,
+            speed = .025,
+            x, y;
+
+        render();
+
+        function render() {
+            context.clearRect(0, 0, width, height);
+            x = centerX + Math.cos(angle) * xRadius;
+            y = centerY + Math.sin(angle) * yRadius;
+            context.beginPath();
+            context.arc(x, y, 10, 0, Math.PI * 2, false);
+            context.fill();
+
+            angle += speed;
+            requestAnimationFrame(render);
+        }
+    }
+
+    function circle() {
+        let centerX = width / 2,
+            centerY = height / 2,
+            radius = 200,
+            angle = 0,
+            speed = .025,
+            x, y;
+
+        render();
+
+        function render() {
+            context.clearRect(0, 0, width, height);
+            x = centerX + Math.cos(angle) * radius;
+            y = centerY + Math.sin(angle) * radius;
+            context.beginPath();
+            context.arc(x, y, 10, 0, Math.PI * 2, false);
+            context.fill();
+
+            angle += speed;
+            requestAnimationFrame(render);
+        }
+    }
 
     function sinewave() {
         context.translate(0, height / 2);
@@ -21,9 +128,7 @@ window.onload = () => {
         }
     }
 
-
-
-    function sinewaveMotion() {
+    function sinewaveMotionY() {
         var centerY = height * .5,
             centerX = width * .5,
             offset = height * .4,
@@ -95,8 +200,27 @@ window.onload = () => {
         }
     }
 
+    function sinewaveMotionX() {
+        var centerY = height * .5,
+            centerX = width * .5,
+            offset = height * .4,
+            speed = 0.1,
+            angle = 0;
 
+        render();
 
+        function render() {
+            var x = centerX + Math.sin(angle) * offset;
 
+            context.clearRect(0, 0, width, height);
+            context.beginPath();
+            context.arc(x, centerY, 50, 0, Math.PI * 2, false);
+            context.fill();
+
+            angle += speed;
+
+            requestAnimationFrame(render);
+        }
+    }
 }
 
