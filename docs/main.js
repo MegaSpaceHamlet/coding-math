@@ -106,7 +106,6 @@ window.onload = () => {
 
 
             context.restore();
-            console.log(arr);
             requestAnimationFrame(render);
         }
 
