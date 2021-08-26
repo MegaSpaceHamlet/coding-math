@@ -13,8 +13,8 @@ window.onload = () => {
     // circle();
     // ellipse();
     // lissajousCurve();
-    // drawInCircle();
-    arctangent();
+    drawInCircle();
+    // arctangent();
 
     function arctangent() {
         let arrowX = width / 2,
@@ -47,16 +47,29 @@ window.onload = () => {
 
         document.body.addEventListener("mousemove", (event) => {
             dx = event.clientX - arrowX;
-            dy = event.clientY - arrowY;     
+            dy = event.clientY - arrowY;
             angle = Math.atan2(dy, dx);
         });
     }
 
 
     /**
+     * 8.25.21
      * Draws number of objects evenly on a circle's perimeter
      * I see a wheel. I feel like this function could be used
      * to create a wheel-turning effect.
+     * 
+     * 8.26.21
+     * By applying arctangent, I was able to get the wheel to
+     * rotate with the mouse's movement. It took me a while 
+     * because I realized that by using context.translate() 
+     * to move the origin point to the middle of the canvas,
+     * I had to change the center of the circle to be at (0, 0),
+     * not at centerX, centerY. They are the center values from 
+     * the old origin point. Once the canvas is treanslated, 
+     * they are points at the edge of the canvas. The center
+     * co-ordinates are 0, 0.
+     * 
      */
     function drawInCircle() {
         let centerX = width / 2,
@@ -65,18 +78,43 @@ window.onload = () => {
             angle = 0,
             numObjects = 10, // can change this variable to see how it affects
             slice = Math.PI * 2 / numObjects,
-            x, y;
+            x, y,
+            rotateAngle = 0,
+            dx, dy;
 
-        context.clearRect(0, 0, width, height);
 
-        for (let i = 0; i < numObjects; i++) {
-            angle = i * slice;
-            x = centerX + Math.cos(angle) * radius;
-            y = centerY + Math.sin(angle) * radius;
-            context.beginPath();
-            context.arc(x, y, 10, 0, Math.PI * 2, false);
-            context.fill();
+
+
+        render();
+
+        function render() {
+
+            context.clearRect(0, 0, width, height);
+            context.save();
+            context.translate(centerX, centerY);
+            context.rotate(rotateAngle);
+
+            // Draw circle 
+            for (let i = 0; i < numObjects; i++) {
+                angle = i * slice;
+                x = 0 + Math.cos(angle) * radius;
+                y = 0 + Math.sin(angle) * radius;
+                context.beginPath();
+                context.arc(x, y, 10, 0, Math.PI * 2, false);
+                context.fill();
+            }
+
+
+            context.restore();
+            console.log(arr);
+            requestAnimationFrame(render);
         }
+
+        document.body.addEventListener("mousemove", (event) => {
+            dx = event.clientX - centerX;
+            dy = event.clientY - centerY;
+            rotateAngle = Math.atan2(dy, dx);
+        })
 
     }
 
